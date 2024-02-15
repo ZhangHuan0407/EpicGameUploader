@@ -61,15 +61,23 @@ namespace EpicGameUploader
 
         private void ReloadContent()
         {
+            string EpicOnlineServicesConfigPath;
             if (MacOSToggle.Checked)
             {
                 EpicUploadDirectory = "../../Builds/StandaloneOSX Epic/WizenedDream.app";
-                EpicAppLaunch = "Content/WizenedDream";
+                EpicAppLaunch = "Contents/MacOS/WizenedDream";
+                EpicOnlineServicesConfigPath = $"{EpicUploadDirectory}/Contents/Resources/Data/StreamingAssets/EOS/EpicOnlineServicesConfig.json";
             }
             else if (Win64Toggle.Checked)
             {
                 EpicUploadDirectory = "../../Builds/StandaloneWindows64 Epic";
                 EpicAppLaunch = "WizenedDream.exe";
+                EpicOnlineServicesConfigPath = $"{EpicUploadDirectory}/WizenedDream_Data/StreamingAssets/EOS/EpicOnlineServicesConfig.json";
+            }
+            else
+            {
+                MessageBox.Show("Unkonow type");
+                return;
             }
             EpicUploadDirectory = new DirectoryInfo(EpicUploadDirectory).FullName.Replace("\\", "/");
             if (!Directory.Exists(EpicUploadDirectory))
@@ -77,7 +85,6 @@ namespace EpicGameUploader
                 MessageBox.Show("Not found directory: \n" + EpicUploadDirectory);
                 return;
             }
-            string EpicOnlineServicesConfigPath = $"{EpicUploadDirectory}/WizenedDream_Data/StreamingAssets/EOS/EpicOnlineServicesConfig.json";
             settings = LitJson.JsonMapper.ToObject<SettingData>(File.ReadAllText(EpicOnlineServicesConfigPath));
 
             this.uploadDirectoryTbox.Text = EpicUploadDirectory;
@@ -104,8 +111,15 @@ namespace EpicGameUploader
             strBuilder.Append(" -mode=\"UploadBinary\"");
             strBuilder.AppendFormat(" -BuildRoot=\"{0}\"", EpicUploadDirectory);
             strBuilder.AppendFormat(" -CloudDir=\"{0}\"", CloudDir);
-            strBuilder.AppendFormat(" -BuildVersion=\"{0}\"", settings.productVersion);
-            strBuilder.AppendFormat(" -AppLaunch=\"{0}\"", Path.GetFileName(EpicAppLaunch));
+            string buildVersion = settings.productVersion;
+            if (Win64Toggle.Checked)
+                buildVersion = settings.productVersion + "Win64";
+            else if (MacOSToggle.Checked)
+                buildVersion = settings.productVersion + "MacOS";
+            else
+                MessageBox.Show("Unknown platform");
+            strBuilder.AppendFormat(" -BuildVersion=\"{0}\"", buildVersion);
+            strBuilder.AppendFormat(" -AppLaunch=\"{0}\"", EpicAppLaunch);
             strBuilder.AppendFormat(" -AppArgs=\"{0}\"", settings.appArgs);
             if (!string.IsNullOrWhiteSpace(settings.IgnoreList))
             {
@@ -119,6 +133,7 @@ namespace EpicGameUploader
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
             };
+            int exitCode = 0;
             using (FileStream logFileStream = new FileStream("log.txt", FileMode.Create, FileAccess.Write))
             {
                 {
@@ -159,14 +174,10 @@ namespace EpicGameUploader
                         return;
                     }
                     process.WaitForExit();
-                    if (process.ExitCode != 0)
-                    {
-                        MessageBox.Show("finish with exit code " + process.ExitCode);
-                        return;
-                    }
+                    exitCode = process.ExitCode;
                 }
             }
-            MessageBox.Show("finish");
+            MessageBox.Show("finish with exit code " + exitCode);
         }
         private void RefreshIgnoreFile()
         {
