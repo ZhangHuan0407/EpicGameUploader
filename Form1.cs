@@ -12,89 +12,167 @@ namespace EpicGameUploader
     {
         private class SettingData
         {
-            public string EpicBPTFile = "";
-            public string EpicAppFile = "";
+            public string organizationId = "";
+            public string productID = "";
+            public string artifactID = "";
+            public string productVersion = "1.0";
+            public string appArgs = "";
             public string IgnoreList = "";
-            public string OrganizationId = "";
-            public string ProductId = "";
-            public string ArtifactId = "";
-            public string BPTClientId = "";
-            public string BPTClientSecret = "";
-            public string CloudDir = "";
-            public string BuildVersion = "1.0";
-            public string AppArgs = "";
         }
-        const string ConfigJson = "Config.json";
-        const string IgnoreUploadFile = "ignore_upload_files.txt";
+        private string EpicBPTFile;
+        private string EpicUploadDirectory;
+        private string EpicAppLaunch;
+        private string CloudDir;
+
+        public string BPTClientID = "";
+        public string BPTClientSecret = "";
+
         SettingData settings;
         public Form1()
         {
-            if (File.Exists(ConfigJson))
-            {
-                settings = LitJson.JsonMapper.ToObject<SettingData>(File.ReadAllText(ConfigJson));
-            }
-            if (settings == null)
-            {
-                settings = new SettingData();
-            }
             InitializeComponent();
         }
 
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            SaveConfig();
-        }
 
-        private void SaveConfig()
-        {
-            File.WriteAllText(ConfigJson, LitJson.JsonMapper.ToJson(settings));
+            if (settings == null)
+            {
+                settings = new SettingData();
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.tBoxUploadTool.Text = settings.EpicBPTFile;
-            this.uploadAppTbox.Text = settings.EpicAppFile;
-            this.tBoxIgnore.Text = settings.IgnoreList;
-            this.tBoxBuildVersion.Text = settings.BuildVersion;
-            this.tBoxOrganizationId.Text = settings.OrganizationId;
-            this.tBoxProductId.Text = settings.ProductId;
-            this.tBoxArtifactId.Text = settings.ArtifactId;
-            this.tBoxBPTClientId.Text = settings.BPTClientId;
-            this.tBoxBPTClientSecret.Text = settings.BPTClientSecret;
-            this.tBoxCloudDir.Text = settings.CloudDir;
-            this.tBoxAppArgs.Text = settings.AppArgs;
+            Win64Toggle.Checked = true;
+            FileInfo epicBPTFileInfo = new FileInfo("Engine/Binaries/Win64/BuildPatchTool.exe");
+            CloudDir = "G:/EpicCloud";
+            if (File.Exists("BPTClient.txt"))
+            {
+                string[] lines = File.ReadAllLines("BPTClient.txt");
+                BPTClientID = lines[0].Trim();
+                BPTClientSecret = lines[1].Trim();
+            }
+            EpicBPTFile = epicBPTFileInfo.FullName.Replace("\\", "/");
+            this.tBoxUploadTool.Text = EpicBPTFile;
+            ReloadContent();
         }
 
+        private void ReloadContent()
+        {
+            if (MacOSToggle.Checked)
+            {
+                EpicUploadDirectory = "../../Builds/StandaloneOSX Epic/WizenedDream.app";
+                EpicAppLaunch = "Content/WizenedDream";
+            }
+            else if (Win64Toggle.Checked)
+            {
+                EpicUploadDirectory = "../../Builds/StandaloneWindows64 Epic";
+                EpicAppLaunch = "WizenedDream.exe";
+            }
+            EpicUploadDirectory = new DirectoryInfo(EpicUploadDirectory).FullName.Replace("\\", "/");
+            if (!Directory.Exists(EpicUploadDirectory))
+            {
+                MessageBox.Show("Not found directory: \n" + EpicUploadDirectory);
+                return;
+            }
+            string EpicOnlineServicesConfigPath = $"{EpicUploadDirectory}/WizenedDream_Data/StreamingAssets/EOS/EpicOnlineServicesConfig.json";
+            settings = LitJson.JsonMapper.ToObject<SettingData>(File.ReadAllText(EpicOnlineServicesConfigPath));
+
+            this.uploadDirectoryTbox.Text = EpicUploadDirectory;
+            this.tBoxIgnore.Text = settings.IgnoreList;
+            this.tBoxBuildVersion.Text = settings.productVersion;
+            this.tBoxOrganizationId.Text = settings.organizationId;
+            this.tBoxProductId.Text = settings.productID;
+            this.tBoxArtifactId.Text = settings.artifactID;
+            this.tBoxBPTClientId.Text = BPTClientID;
+            this.tBoxBPTClientSecret.Text = BPTClientSecret;
+            this.tBoxCloudDir.Text = CloudDir;
+            this.tBoxAppArgs.Text = settings.appArgs;
+        }
 
         private void UploadGame()
         {
-            var buildRoot = Path.GetDirectoryName(settings.EpicAppFile);
             StringBuilder strBuilder = new StringBuilder();
             //strBuilder.AppendFormat(settings.EpicBPTFile);
-            strBuilder.AppendFormat(" -OrganizationId=\"{0}\"", settings.OrganizationId);
-            strBuilder.AppendFormat(" -ProductId=\"{0}\"", settings.ProductId);
-            strBuilder.AppendFormat(" -ArtifactId=\"{0}\"", settings.ArtifactId);
-            strBuilder.AppendFormat(" -ClientId=\"{0}\"", settings.BPTClientId);
-            strBuilder.AppendFormat(" -ClientSecret=\"{0}\"", settings.BPTClientSecret);
+            strBuilder.AppendFormat(" -OrganizationId=\"{0}\"", settings.organizationId);
+            strBuilder.AppendFormat(" -ProductId=\"{0}\"", settings.productID);
+            strBuilder.AppendFormat(" -ArtifactId=\"{0}\"", settings.artifactID);
+            strBuilder.AppendFormat(" -ClientId=\"{0}\"", BPTClientID);
+            strBuilder.AppendFormat(" -ClientSecret=\"{0}\"", BPTClientSecret);
             strBuilder.Append(" -mode=\"UploadBinary\"");
-            strBuilder.AppendFormat(" -BuildRoot={0}", buildRoot);
-            strBuilder.AppendFormat(" -CloudDir={0}", settings.CloudDir);
-            strBuilder.AppendFormat(" -BuildVersion=\"{0}\"", settings.BuildVersion);
-            strBuilder.AppendFormat(" -AppLaunch=\"{0}\"", Path.GetFileName(settings.EpicAppFile));
-            strBuilder.AppendFormat(" -AppArgs=\"{0}\"", settings.AppArgs);
+            strBuilder.AppendFormat(" -BuildRoot=\"{0}\"", EpicUploadDirectory);
+            strBuilder.AppendFormat(" -CloudDir=\"{0}\"", CloudDir);
+            strBuilder.AppendFormat(" -BuildVersion=\"{0}\"", settings.productVersion);
+            strBuilder.AppendFormat(" -AppLaunch=\"{0}\"", Path.GetFileName(EpicAppLaunch));
+            strBuilder.AppendFormat(" -AppArgs=\"{0}\"", settings.appArgs);
             if (!string.IsNullOrWhiteSpace(settings.IgnoreList))
             {
-                strBuilder.AppendFormat(" -FileIgnoreList=\"{0}\"", Path.Combine(buildRoot, IgnoreUploadFile));
             }
 
-            System.Diagnostics.Process.Start(settings.EpicBPTFile, strBuilder.ToString()).WaitForExit();
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(EpicBPTFile, strBuilder.ToString())
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardInput = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+            };
+            using (FileStream logFileStream = new FileStream("log.txt", FileMode.Create, FileAccess.Write))
+            {
+                {
+                    string str = processStartInfo.FileName;
+                    byte[] bytes = Encoding.UTF8.GetBytes(str);
+                    logFileStream.Write(bytes, 0, bytes.Length);
+                    str = processStartInfo.Arguments;
+                    bytes = Encoding.UTF8.GetBytes(str);
+                    logFileStream.Write(bytes, 0, bytes.Length);
+                    str = $"\n{DateTime.Now}\n";
+                    bytes = Encoding.UTF8.GetBytes(str);
+                    logFileStream.Write(bytes, 0, bytes.Length);
+                }
+                using (Process process = Process.Start(processStartInfo) ?? throw new Exception($"{nameof(process)} start failed, {processStartInfo.FileName}"))
+                {
+                    process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
+                    {
+                        string str = e.Data ?? string.Empty;
+                        byte[] bytes = Encoding.UTF8.GetBytes(str);
+                        logFileStream.Write(bytes, 0, bytes.Length);
+                    };
+                    process.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
+                    {
+                        string str = e.Data ?? string.Empty;
+                        byte[] bytes = Encoding.UTF8.GetBytes(str);
+                        logFileStream.Write(bytes, 0, bytes.Length);
+                    };
+
+                    process.BeginErrorReadLine();
+                    process.BeginOutputReadLine();
+
+                    process.WaitForExit(1000 * 1000);
+                    // time out, kill process
+                    if (!process.HasExited)
+                    {
+                        MessageBox.Show("timeout!");
+                        process.Kill();
+                        return;
+                    }
+                    process.WaitForExit();
+                    if (process.ExitCode != 0)
+                    {
+                        MessageBox.Show("finish with exit code " + process.ExitCode);
+                        return;
+                    }
+                }
+            }
+            MessageBox.Show("finish");
         }
         private void RefreshIgnoreFile()
         {
             List<string> ignoreFileList = new List<string>();
             var ignoreList = settings.IgnoreList.Split('\n');
-            var uploadDir = Path.GetDirectoryName(settings.EpicAppFile);
+            var uploadDir = EpicUploadDirectory;
             foreach (var ignoreItem in ignoreList)
             {
                 var item = ignoreItem.Trim();
@@ -125,62 +203,58 @@ namespace EpicGameUploader
                     }
                 }
             }
-            var ignoreFile = Path.Combine(uploadDir, IgnoreUploadFile);
-            ignoreFileList.Add(IgnoreUploadFile);
-            File.WriteAllLines(ignoreFile, ignoreFileList);
-
             //this.ignoreListText.AppendText(LitJson.JsonMapper.ToJson(ignoreFileList));
         }
 
 
         private void tBoxUploadTool_TextChanged(object sender, EventArgs e)
         {
-            settings.EpicBPTFile = this.tBoxUploadTool.Text;
+            EpicBPTFile = this.tBoxUploadTool.Text;
         }
 
-        private void uploadAppTbox_TextChanged(object sender, EventArgs e)
+        private void uploadDirectoryTbox_TextChanged(object sender, EventArgs e)
         {
-            settings.EpicAppFile = this.uploadAppTbox.Text;
+            EpicUploadDirectory = this.uploadDirectoryTbox.Text;
         }
 
         private void tBoxOrganizationId_TextChanged(object sender, EventArgs e)
         {
-            settings.OrganizationId = this.tBoxOrganizationId.Text;
+            settings.organizationId = this.tBoxOrganizationId.Text;
         }
 
         private void tBoxProductId_TextChanged(object sender, EventArgs e)
         {
-            settings.ProductId = this.tBoxProductId.Text;
+            settings.productID = this.tBoxProductId.Text;
         }
 
         private void tBoxArtifactId_TextChanged(object sender, EventArgs e)
         {
-            settings.ArtifactId = this.tBoxArtifactId.Text;
+            settings.artifactID = this.tBoxArtifactId.Text;
         }
 
         private void tBoxBPTClientId_TextChanged(object sender, EventArgs e)
         {
-            settings.BPTClientId = this.tBoxBPTClientId.Text;
+            BPTClientID = this.tBoxBPTClientId.Text;
         }
 
         private void tBoxBPTClientSecret_TextChanged(object sender, EventArgs e)
         {
-            settings.BPTClientSecret = this.tBoxBPTClientSecret.Text;
+            BPTClientSecret = this.tBoxBPTClientSecret.Text;
         }
 
         private void tBoxCloudDir_TextChanged(object sender, EventArgs e)
         {
-            settings.CloudDir = this.tBoxCloudDir.Text;
+            CloudDir = this.tBoxCloudDir.Text;
         }
 
         private void tBoxBuildVersion_TextChanged(object sender, EventArgs e)
         {
-            settings.BuildVersion = this.tBoxBuildVersion.Text;
+            settings.productVersion = this.tBoxBuildVersion.Text;
         }
 
         private void tBoxAppArgs_TextChanged(object sender, EventArgs e)
         {
-            settings.AppArgs = this.tBoxAppArgs.Text;
+            settings.appArgs = this.tBoxAppArgs.Text;
         }
 
         private void uploadToolSelectBt_Click(object sender, EventArgs e)
@@ -212,18 +286,13 @@ namespace EpicGameUploader
             dialog.Multiselect = false;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                this.uploadAppTbox.Text = dialog.FileName;
+                this.uploadDirectoryTbox.Text = dialog.FileName;
             }
-        }
-
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            SaveConfig();
         }
 
         private void UploadBt_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(settings.EpicBPTFile) || !File.Exists(settings.EpicBPTFile))
+            if (!File.Exists(EpicBPTFile))
             {
                 if (MessageBox.Show("Epic上传工具无效，请重新选择。", "错误", MessageBoxButtons.OK) == DialogResult.OK)
                 {
@@ -231,7 +300,7 @@ namespace EpicGameUploader
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(settings.EpicAppFile) || !File.Exists(settings.EpicAppFile))
+            if (!File.Exists(Path.Combine(EpicUploadDirectory, EpicAppLaunch)))
             {
                 if (MessageBox.Show("游戏exe文件无效，请重新选择。", "错误", MessageBoxButtons.OK) == DialogResult.OK)
                 {
@@ -240,6 +309,11 @@ namespace EpicGameUploader
             }
             RefreshIgnoreFile();
             UploadGame();
+        }
+
+        private void refreshButton_Click(object sender, EventArgs e)
+        {
+            ReloadContent();
         }
     }
 }
