@@ -47,12 +47,12 @@ namespace EpicGameUploader
         {
             Win64Toggle.Checked = true;
             FileInfo epicBPTFileInfo = new FileInfo("Engine/Binaries/Win64/BuildPatchTool.exe");
-            CloudDir = "G:/EpicCloud";
             if (File.Exists("BPTClient.txt"))
             {
                 string[] lines = File.ReadAllLines("BPTClient.txt");
                 BPTClientID = lines[0].Trim();
                 BPTClientSecret = lines[1].Trim();
+                CloudDir = lines[2].Trim();
             }
             EpicBPTFile = epicBPTFileInfo.FullName.Replace("\\", "/");
             this.tBoxUploadTool.Text = EpicBPTFile;
