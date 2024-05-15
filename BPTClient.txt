@@ -1,0 +1,4 @@
+﻿BPTClientID
+BPTClientSecret
+D:/Tools/EpicGames/EpicCloud
+XXXProject

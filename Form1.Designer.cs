@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -63,11 +64,13 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tBoxAppArgs = new System.Windows.Forms.TextBox();
             this.refreshButton = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
             this.tBoxIgnore = new System.Windows.Forms.TextBox();
             this.UploadBt = new System.Windows.Forms.Button();
             this.Win64Toggle = new System.Windows.Forms.RadioButton();
             this.MacOSToggle = new System.Windows.Forms.RadioButton();
+            this.DLC1Toggle = new System.Windows.Forms.RadioButton();
+            this.eosConfigFilePathLabel = new System.Windows.Forms.Label();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.flowLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -97,7 +100,7 @@
             this.flowLayoutPanel1.Controls.Add(this.panel10);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(37, 15);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(992, 440);
             this.flowLayoutPanel1.TabIndex = 0;
@@ -109,7 +112,7 @@
             this.panel3.Controls.Add(this.tBoxUploadTool);
             this.panel3.Controls.Add(this.linkLabel2);
             this.panel3.Location = new System.Drawing.Point(4, 4);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(984, 36);
             this.panel3.TabIndex = 4;
@@ -117,7 +120,7 @@
             // uploadToolSelectBt
             // 
             this.uploadToolSelectBt.Location = new System.Drawing.Point(852, 4);
-            this.uploadToolSelectBt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.uploadToolSelectBt.Margin = new System.Windows.Forms.Padding(4);
             this.uploadToolSelectBt.Name = "uploadToolSelectBt";
             this.uploadToolSelectBt.Size = new System.Drawing.Size(100, 29);
             this.uploadToolSelectBt.TabIndex = 2;
@@ -129,7 +132,7 @@
             // 
             this.tBoxUploadTool.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tBoxUploadTool.Location = new System.Drawing.Point(177, 4);
-            this.tBoxUploadTool.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tBoxUploadTool.Margin = new System.Windows.Forms.Padding(4);
             this.tBoxUploadTool.Name = "tBoxUploadTool";
             this.tBoxUploadTool.Size = new System.Drawing.Size(651, 27);
             this.tBoxUploadTool.TabIndex = 1;
@@ -155,7 +158,7 @@
             this.panel1.Controls.Add(this.uploadAppSelectBt);
             this.panel1.Controls.Add(this.uploadDirectoryTbox);
             this.panel1.Location = new System.Drawing.Point(4, 48);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(984, 36);
             this.panel1.TabIndex = 0;
@@ -174,7 +177,7 @@
             // uploadAppSelectBt
             // 
             this.uploadAppSelectBt.Location = new System.Drawing.Point(852, 4);
-            this.uploadAppSelectBt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.uploadAppSelectBt.Margin = new System.Windows.Forms.Padding(4);
             this.uploadAppSelectBt.Name = "uploadAppSelectBt";
             this.uploadAppSelectBt.Size = new System.Drawing.Size(100, 29);
             this.uploadAppSelectBt.TabIndex = 2;
@@ -182,12 +185,12 @@
             this.uploadAppSelectBt.UseVisualStyleBackColor = true;
             this.uploadAppSelectBt.Click += new System.EventHandler(this.uploadAppSelectBt_Click);
             // 
-            // uploadAppTbox
+            // uploadDirectoryTbox
             // 
             this.uploadDirectoryTbox.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uploadDirectoryTbox.Location = new System.Drawing.Point(177, 4);
-            this.uploadDirectoryTbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.uploadDirectoryTbox.Name = "uploadAppTbox";
+            this.uploadDirectoryTbox.Margin = new System.Windows.Forms.Padding(4);
+            this.uploadDirectoryTbox.Name = "uploadDirectoryTbox";
             this.uploadDirectoryTbox.Size = new System.Drawing.Size(651, 27);
             this.uploadDirectoryTbox.TabIndex = 1;
             this.uploadDirectoryTbox.TextChanged += new System.EventHandler(this.uploadDirectoryTbox_TextChanged);
@@ -198,7 +201,7 @@
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.tBoxOrganizationId);
             this.panel2.Location = new System.Drawing.Point(4, 92);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(984, 36);
             this.panel2.TabIndex = 4;
@@ -218,7 +221,7 @@
             // 
             this.tBoxOrganizationId.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tBoxOrganizationId.Location = new System.Drawing.Point(177, 4);
-            this.tBoxOrganizationId.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tBoxOrganizationId.Margin = new System.Windows.Forms.Padding(4);
             this.tBoxOrganizationId.Name = "tBoxOrganizationId";
             this.tBoxOrganizationId.Size = new System.Drawing.Size(651, 27);
             this.tBoxOrganizationId.TabIndex = 1;
@@ -230,7 +233,7 @@
             this.panel4.Controls.Add(this.label3);
             this.panel4.Controls.Add(this.tBoxProductId);
             this.panel4.Location = new System.Drawing.Point(4, 136);
-            this.panel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(984, 36);
             this.panel4.TabIndex = 5;
@@ -250,7 +253,7 @@
             // 
             this.tBoxProductId.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tBoxProductId.Location = new System.Drawing.Point(177, 4);
-            this.tBoxProductId.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tBoxProductId.Margin = new System.Windows.Forms.Padding(4);
             this.tBoxProductId.Name = "tBoxProductId";
             this.tBoxProductId.Size = new System.Drawing.Size(651, 27);
             this.tBoxProductId.TabIndex = 1;
@@ -262,7 +265,7 @@
             this.panel5.Controls.Add(this.label4);
             this.panel5.Controls.Add(this.tBoxArtifactId);
             this.panel5.Location = new System.Drawing.Point(4, 180);
-            this.panel5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(984, 36);
             this.panel5.TabIndex = 6;
@@ -282,7 +285,7 @@
             // 
             this.tBoxArtifactId.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tBoxArtifactId.Location = new System.Drawing.Point(177, 4);
-            this.tBoxArtifactId.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tBoxArtifactId.Margin = new System.Windows.Forms.Padding(4);
             this.tBoxArtifactId.Name = "tBoxArtifactId";
             this.tBoxArtifactId.Size = new System.Drawing.Size(651, 27);
             this.tBoxArtifactId.TabIndex = 1;
@@ -294,7 +297,7 @@
             this.panel6.Controls.Add(this.label5);
             this.panel6.Controls.Add(this.tBoxBPTClientId);
             this.panel6.Location = new System.Drawing.Point(4, 224);
-            this.panel6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel6.Margin = new System.Windows.Forms.Padding(4);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(984, 36);
             this.panel6.TabIndex = 7;
@@ -314,7 +317,7 @@
             // 
             this.tBoxBPTClientId.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tBoxBPTClientId.Location = new System.Drawing.Point(177, 4);
-            this.tBoxBPTClientId.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tBoxBPTClientId.Margin = new System.Windows.Forms.Padding(4);
             this.tBoxBPTClientId.Name = "tBoxBPTClientId";
             this.tBoxBPTClientId.Size = new System.Drawing.Size(651, 27);
             this.tBoxBPTClientId.TabIndex = 1;
@@ -326,7 +329,7 @@
             this.panel7.Controls.Add(this.label6);
             this.panel7.Controls.Add(this.tBoxBPTClientSecret);
             this.panel7.Location = new System.Drawing.Point(4, 268);
-            this.panel7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel7.Margin = new System.Windows.Forms.Padding(4);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(984, 36);
             this.panel7.TabIndex = 8;
@@ -346,7 +349,7 @@
             // 
             this.tBoxBPTClientSecret.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tBoxBPTClientSecret.Location = new System.Drawing.Point(177, 4);
-            this.tBoxBPTClientSecret.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tBoxBPTClientSecret.Margin = new System.Windows.Forms.Padding(4);
             this.tBoxBPTClientSecret.Name = "tBoxBPTClientSecret";
             this.tBoxBPTClientSecret.Size = new System.Drawing.Size(651, 27);
             this.tBoxBPTClientSecret.TabIndex = 1;
@@ -358,7 +361,7 @@
             this.panel8.Controls.Add(this.label7);
             this.panel8.Controls.Add(this.tBoxCloudDir);
             this.panel8.Location = new System.Drawing.Point(4, 312);
-            this.panel8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel8.Margin = new System.Windows.Forms.Padding(4);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(984, 36);
             this.panel8.TabIndex = 9;
@@ -378,7 +381,7 @@
             // 
             this.tBoxCloudDir.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tBoxCloudDir.Location = new System.Drawing.Point(177, 4);
-            this.tBoxCloudDir.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tBoxCloudDir.Margin = new System.Windows.Forms.Padding(4);
             this.tBoxCloudDir.Name = "tBoxCloudDir";
             this.tBoxCloudDir.Size = new System.Drawing.Size(651, 27);
             this.tBoxCloudDir.TabIndex = 1;
@@ -390,7 +393,7 @@
             this.panel9.Controls.Add(this.label8);
             this.panel9.Controls.Add(this.tBoxBuildVersion);
             this.panel9.Location = new System.Drawing.Point(4, 356);
-            this.panel9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel9.Margin = new System.Windows.Forms.Padding(4);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(984, 36);
             this.panel9.TabIndex = 10;
@@ -410,7 +413,7 @@
             // 
             this.tBoxBuildVersion.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tBoxBuildVersion.Location = new System.Drawing.Point(177, 4);
-            this.tBoxBuildVersion.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tBoxBuildVersion.Margin = new System.Windows.Forms.Padding(4);
             this.tBoxBuildVersion.Name = "tBoxBuildVersion";
             this.tBoxBuildVersion.Size = new System.Drawing.Size(651, 27);
             this.tBoxBuildVersion.TabIndex = 1;
@@ -422,7 +425,7 @@
             this.panel10.Controls.Add(this.label9);
             this.panel10.Controls.Add(this.tBoxAppArgs);
             this.panel10.Location = new System.Drawing.Point(4, 400);
-            this.panel10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel10.Margin = new System.Windows.Forms.Padding(4);
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(984, 36);
             this.panel10.TabIndex = 11;
@@ -442,7 +445,7 @@
             // 
             this.tBoxAppArgs.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tBoxAppArgs.Location = new System.Drawing.Point(177, 4);
-            this.tBoxAppArgs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tBoxAppArgs.Margin = new System.Windows.Forms.Padding(4);
             this.tBoxAppArgs.Name = "tBoxAppArgs";
             this.tBoxAppArgs.Size = new System.Drawing.Size(651, 27);
             this.tBoxAppArgs.TabIndex = 1;
@@ -453,7 +456,7 @@
             this.refreshButton.BackColor = System.Drawing.Color.LightGreen;
             this.refreshButton.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.refreshButton.Location = new System.Drawing.Point(869, 460);
-            this.refreshButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.refreshButton.Margin = new System.Windows.Forms.Padding(4);
             this.refreshButton.Name = "refreshButton";
             this.refreshButton.Size = new System.Drawing.Size(160, 38);
             this.refreshButton.TabIndex = 1;
@@ -461,34 +464,22 @@
             this.refreshButton.UseVisualStyleBackColor = false;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(292, 532);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(422, 18);
-            this.label10.TabIndex = 4;
-            this.label10.Text = "忽略上传的文件夹或文件(相对于游戏.exe所在目录)";
-            // 
             // tBoxIgnore
             // 
             this.tBoxIgnore.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tBoxIgnore.Location = new System.Drawing.Point(41, 554);
-            this.tBoxIgnore.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tBoxIgnore.Location = new System.Drawing.Point(38, 552);
+            this.tBoxIgnore.Margin = new System.Windows.Forms.Padding(4);
             this.tBoxIgnore.Multiline = true;
             this.tBoxIgnore.Name = "tBoxIgnore";
-            this.tBoxIgnore.Size = new System.Drawing.Size(987, 207);
+            this.tBoxIgnore.Size = new System.Drawing.Size(987, 299);
             this.tBoxIgnore.TabIndex = 5;
-            this.tBoxIgnore.TextChanged += new System.EventHandler(this.tBoxIgnore_TextChanged);
             // 
             // UploadBt
             // 
             this.UploadBt.BackColor = System.Drawing.Color.LimeGreen;
             this.UploadBt.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.UploadBt.Location = new System.Drawing.Point(397, 784);
-            this.UploadBt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.UploadBt.Location = new System.Drawing.Point(393, 878);
+            this.UploadBt.Margin = new System.Windows.Forms.Padding(4);
             this.UploadBt.Name = "UploadBt";
             this.UploadBt.Size = new System.Drawing.Size(224, 62);
             this.UploadBt.TabIndex = 6;
@@ -499,7 +490,7 @@
             // Win64Toggle
             // 
             this.Win64Toggle.AutoSize = true;
-            this.Win64Toggle.Location = new System.Drawing.Point(684, 471);
+            this.Win64Toggle.Location = new System.Drawing.Point(560, 471);
             this.Win64Toggle.Name = "Win64Toggle";
             this.Win64Toggle.Size = new System.Drawing.Size(68, 19);
             this.Win64Toggle.TabIndex = 7;
@@ -510,7 +501,7 @@
             // MacOSToggle
             // 
             this.MacOSToggle.AutoSize = true;
-            this.MacOSToggle.Location = new System.Drawing.Point(524, 471);
+            this.MacOSToggle.Location = new System.Drawing.Point(414, 471);
             this.MacOSToggle.Name = "MacOSToggle";
             this.MacOSToggle.Size = new System.Drawing.Size(68, 19);
             this.MacOSToggle.TabIndex = 8;
@@ -518,21 +509,52 @@
             this.MacOSToggle.Text = "MacOS";
             this.MacOSToggle.UseVisualStyleBackColor = true;
             // 
+            // DLC1Toggle
+            // 
+            this.DLC1Toggle.AutoSize = true;
+            this.DLC1Toggle.Location = new System.Drawing.Point(717, 471);
+            this.DLC1Toggle.Name = "DLC1Toggle";
+            this.DLC1Toggle.Size = new System.Drawing.Size(60, 19);
+            this.DLC1Toggle.TabIndex = 9;
+            this.DLC1Toggle.TabStop = true;
+            this.DLC1Toggle.Text = "DLC1";
+            this.DLC1Toggle.UseVisualStyleBackColor = true;
+            // 
+            // eosConfigFilePathLabel
+            // 
+            this.eosConfigFilePathLabel.AutoSize = true;
+            this.eosConfigFilePathLabel.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.eosConfigFilePathLabel.Location = new System.Drawing.Point(38, 512);
+            this.eosConfigFilePathLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.eosConfigFilePathLabel.Name = "eosConfigFilePathLabel";
+            this.eosConfigFilePathLabel.Size = new System.Drawing.Size(134, 18);
+            this.eosConfigFilePathLabel.TabIndex = 10;
+            this.eosConfigFilePathLabel.Text = "目标配置文件：";
+            // 
+            // updateTimer
+            // 
+            this.updateTimer.Enabled = true;
+            this.updateTimer.Interval = 500;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 861);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(1067, 953);
+            this.Controls.Add(this.eosConfigFilePathLabel);
+            this.Controls.Add(this.DLC1Toggle);
             this.Controls.Add(this.MacOSToggle);
             this.Controls.Add(this.Win64Toggle);
             this.Controls.Add(this.UploadBt);
             this.Controls.Add(this.tBoxIgnore);
-            this.Controls.Add(this.label10);
             this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EpicGameUploader";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -597,11 +619,13 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox tBoxAppArgs;
         private System.Windows.Forms.Button refreshButton;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox tBoxIgnore;
         private System.Windows.Forms.Button UploadBt;
         private System.Windows.Forms.RadioButton Win64Toggle;
         private System.Windows.Forms.RadioButton MacOSToggle;
+        private System.Windows.Forms.RadioButton DLC1Toggle;
+        private System.Windows.Forms.Label eosConfigFilePathLabel;
+        private System.Windows.Forms.Timer updateTimer;
     }
 }
 
